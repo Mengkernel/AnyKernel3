@@ -19,7 +19,7 @@ supported.patchlevels=
 '; } # end properties
 
 # shell variables
-block=/dev/block/bootdevice/by-name/boot;
+block=auto;
 is_slot_device=1;
 ramdisk_compression=auto;
 patch_vbmeta_flag=auto;
