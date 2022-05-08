@@ -47,7 +47,3 @@ fi;
 flash_boot;
 flash_dtbo;
 ## end boot install
-
-## Trim partitions
-$bin/busybox fstrim -v /data;
-
