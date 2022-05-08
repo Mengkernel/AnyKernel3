@@ -37,14 +37,15 @@ set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
 
 
 ## AnyKernel boot install
-dump_boot;
+split_boot;
 
 # migrate from /overlay to /overlay.d to enable SAR Magisk
 if [ -d $ramdisk/overlay ]; then
   rm -rf $ramdisk/overlay;
 fi;
 
-write_boot;
+flash_boot;
+flash_dtbo;
 ## end boot install
 
 ## Trim partitions
