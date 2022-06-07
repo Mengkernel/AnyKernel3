@@ -743,7 +743,7 @@ setup_ak() {
   # automate simple multi-partition setup for boot_img_hdr_v3 + vendor_boot
   cd $home;
   if [ -e "/dev/block/by-name/vendor_boot$slot" ] && [ -f dtb ]; then
-    echo "Setting up for simple automatic vendor_boot flashing..." >&2;
+    ui_print "Repacking vendor_boot.img DTB ...";
     vendorbootdir=$home/vendor_boot-files;
     mkdir -p $vendorbootdir;
     cd $vendorbootdir;
@@ -754,6 +754,7 @@ setup_ak() {
     $bin/magiskboot unpack $vendorbootold;
     mv -f $home/dtb $vendorbootdir;
     $bin/magiskboot repack -n $vendorbootold $vendorbootnew;
+    ui_print "Flashing vendor_boot.img to /dev/block/by-name/vendor_boot$slot ...";
     dd if=$vendorbootnew of=$vendorbootblock;
     cd $home;
   fi;
