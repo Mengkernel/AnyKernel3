@@ -742,15 +742,20 @@ setup_ak() {
 
   # automate simple multi-partition setup for boot_img_hdr_v3 + vendor_boot
   cd $home;
-  if [ -e "/dev/block/bootdevice/by-name/vendor_boot$slot" -a ! -f vendor_setup ] && [ -f dtb -o -d vendor_ramdisk -o -d vendor_patch ]; then
+  if [ -e "/dev/block/by-name/vendor_boot$slot" ] && [ -f dtb ]; then
     echo "Setting up for simple automatic vendor_boot flashing..." >&2;
-    (mkdir boot-files;
-    mv -f Image* ramdisk patch boot-files;
-    mkdir vendor_boot-files;
-    mv -f dtb vendor_boot-files;
-    mv -f vendor_ramdisk vendor_boot-files/ramdisk;
-    mv -f vendor_patch vendor_boot-files/patch) 2>/dev/null;
-    touch vendor_setup;
+    vendorbootdir=$home/vendor_boot-files;
+    mkdir -p $vendorbootdir;
+    cd $vendorbootdir;
+    vendorbootold=$vendorbootdir/vendor_boot_old.img;
+    vendorbootnew=$vendorbootdir/vendor_boot_new.img;
+    vendorbootblock=/dev/block/by-name/vendor_boot$slot;
+    dd if=$vendorbootblock of=$vendorbootold;
+    $bin/magiskboot unpack $vendorbootold;
+    mv -f $home/dtb $vendorbootdir;
+    $bin/magiskboot repack -n $vendorbootold $vendorbootnew;
+    dd if=$vendorbootnew of=$vendorbootblock;
+    cd $home;
   fi;
 
   # allow multi-partition ramdisk modifying configurations (using reset_ak)
