@@ -44,6 +44,6 @@ if [ -d $ramdisk/overlay ]; then
   rm -rf $ramdisk/overlay;
 fi;
 
-flash_boot;
 flash_dtbo;
+flash_boot;
 ## end boot install
