@@ -319,7 +319,8 @@ flash_boot() {
           magisk_patched=$?;
         fi;
         if [ $((magisk_patched & 3)) -eq 1 ]; then
-          ui_print " " "Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
+          ui_print "● Magisk detected!!!";
+          ui_print "● Patching kernel so reflashing Magisk is not necessary...";
           comp=$($bin/magiskboot decompress kernel 2>&1 | grep -v 'raw' | sed -n 's;.*\[\(.*\)\];\1;p');
           ($bin/magiskboot split $kernel || $bin/magiskboot decompress $kernel kernel) 2>/dev/null;
           if [ $? != 0 -a "$comp" ]; then
@@ -444,7 +445,7 @@ flash_generic() {
     isro=$(blockdev --getro $imgblock 2>/dev/null);
     blockdev --setrw $imgblock 2>/dev/null;
     if [ ! "$no_block_display" ]; then
-      ui_print " " "$imgblock";
+      ui_print "● Flashing $file...";
     fi;
     if [ -f "$bin/flash_erase" -a -f "$bin/nandwrite" ]; then
       $bin/flash_erase $imgblock 0 0;
@@ -743,7 +744,7 @@ setup_ak() {
   # automate simple multi-partition setup for boot_img_hdr_v3 + vendor_boot
   cd $home;
   if [ -e "/dev/block/by-name/vendor_boot$slot" ] && [ -f dtb ]; then
-    ui_print "Repacking vendor_boot.img DTB ...";
+    ui_print "● Flashing DTB to vendor_boot...";
     vendorbootdir=$home/vendor_boot-files;
     mkdir -p $vendorbootdir;
     cd $vendorbootdir;
@@ -754,7 +755,6 @@ setup_ak() {
     $bin/magiskboot unpack $vendorbootold;
     mv -f $home/dtb $vendorbootdir;
     $bin/magiskboot repack -n $vendorbootold $vendorbootnew;
-    ui_print "Flashing vendor_boot.img to /dev/block/by-name/vendor_boot$slot ...";
     dd if=$vendorbootnew of=$vendorbootblock;
     cd $home;
   fi;
