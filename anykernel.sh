@@ -2,7 +2,7 @@
 ## osm0sis @ xda-developers
 
 ### AnyKernel setup
-# begin properties
+# global properties
 properties() { '
 do.devicecheck=1
 do.modules=0
@@ -13,6 +13,7 @@ device.name1=alioth
 device.name2=aliothin
 supported.versions=
 supported.patchlevels=
+supported.vendorpatchlevels=
 '; } # end properties
 
 
