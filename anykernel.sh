@@ -15,31 +15,37 @@ supported.versions=
 supported.patchlevels=
 '; } # end properties
 
-### AnyKernel install
-# begin attributes
-attributes() {
-set_perm_recursive 0 0 755 644 $ramdisk/*;
-set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
-} # end attributes
 
 ## boot shell variables
-block=auto;
+block=boot;
 is_slot_device=1;
 ramdisk_compression=auto;
 patch_vbmeta_flag=auto;
 no_block_display=1;
 
-# import functions/variables and setup patching - see for reference (DO NOT REMOVE)
-. tools/ak3-core.sh && attributes;
+## import functions/variables - see for reference (DO NOT REMOVE)
+. tools/ak3-core.sh;
 
 ## start boot install
 split_boot;
-
-# migrate from /overlay to /overlay.d to enable SAR Magisk
-if [ -d $ramdisk/overlay ]; then
-  rm -rf $ramdisk/overlay;
-fi;
-
-flash_dtbo;
 flash_boot;
 ## end boot install
+
+## start dtbo install
+flash_dtbo;
+## end dtbo install
+
+## start vendor_boot install
+# reset boot device variables
+reset_ak;
+
+# set boot device variables
+block=vendor_boot;
+is_slot_device=1;
+ramdisk_compression=auto;
+patch_vbmeta_flag=auto;
+no_block_display=1;
+
+split_boot;
+flash_boot;
+## end vendor_boot install
