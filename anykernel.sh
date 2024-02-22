@@ -16,13 +16,11 @@ supported.patchlevels=
 supported.vendorpatchlevels=
 '; } # end properties
 
-
 ## boot shell variables
 block=boot;
 is_slot_device=1;
 ramdisk_compression=auto;
 patch_vbmeta_flag=auto;
-no_block_display=1;
 
 ## import functions/variables - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
@@ -37,15 +35,12 @@ flash_dtbo;
 ## end dtbo install
 
 ## start vendor_boot install
-# reset boot device variables
-reset_ak;
-
-# set boot device variables
 block=vendor_boot;
 is_slot_device=1;
 ramdisk_compression=auto;
 patch_vbmeta_flag=auto;
-no_block_display=1;
+
+reset_ak;
 
 split_boot;
 flash_boot;
