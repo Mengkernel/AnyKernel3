@@ -802,9 +802,6 @@ reset_ak() {
   else
     rm -rf $PATCH $AKHOME/rdtmp;
   fi;
-  if [ ! "$NO_BLOCK_DISPLAY" ]; then
-    ui_print " ";
-  fi;
   setup_ak;
 }
 
