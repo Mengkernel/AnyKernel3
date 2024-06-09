@@ -45,3 +45,6 @@ reset_ak;
 split_boot;
 flash_boot;
 ## end vendor_boot install
+
+# Clean caches
+rm -rf /data/cache/* /data/dalvik-cache/* /data/resource-cache/* /data/system/package_cache/*
