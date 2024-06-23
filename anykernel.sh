@@ -26,24 +26,16 @@ PATCH_VBMETA_FLAG=auto;
 . tools/ak3-core.sh;
 
 ## start boot install
-split_boot;
-flash_boot;
+[ -f *Image* ] && split_boot && flash_boot;
 ## end boot install
 
 ## start dtbo install
-flash_dtbo;
+[ -f dtbo.img ] && flash_dtbo;
 ## end dtbo install
 
 ## start vendor_boot install
 BLOCK=vendor_boot;
-IS_SLOT_DEVICES=1;
-RAMDISK_COMPRESSION=auto;
-PATCH_VBMETA_FLAG=auto;
-
-reset_ak;
-
-split_boot;
-flash_boot;
+[ -f dtb ] && reset_ak && split_boot && flash_boot;
 ## end vendor_boot install
 
 # Clean caches
