@@ -328,7 +328,7 @@ flash_boot() {
         fi;
         if [ $((magisk_patched & 3)) -eq 1 ]; then
           ui_print "==> Magisk detected!!!";
-          ui_print "--> Patching kernel so reflashing Magisk is not necessary...";
+          ui_print "    Patching kernel so reflashing Magisk is not necessary...";
           comp=$(magiskboot decompress kernel 2>&1 | grep -vE 'raw|zimage' | sed -n 's;.*\[\(.*\)\];\1;p');
           (magiskboot split $kernel || magiskboot decompress $kernel kernel) 2>/dev/null;
           if [ $? != 0 -a "$comp" ] && $comp --help 2>/dev/null; then
@@ -572,6 +572,13 @@ write_boot() {
   flash_generic vendor_dlkm;
   flash_generic system_dlkm;
   flash_generic dtbo;
+}
+###
+
+### flash_simple (dump and split image, then build, sign and write image)
+flash_simple() {
+  split_boot;
+  flash_boot;
 }
 ###
 

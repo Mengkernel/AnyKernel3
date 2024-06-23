@@ -26,16 +26,19 @@ PATCH_VBMETA_FLAG=auto;
 . tools/ak3-core.sh;
 
 ## start boot install
-[ -f *Image* ] && split_boot && flash_boot;
+[ -f *Image* ] && flash_simple ||
+    ui_print "==> No kernel image found. Skipping kernel installation.";
 ## end boot install
 
 ## start dtbo install
-[ -f dtbo.img ] && flash_dtbo;
+[ -f dtbo.img ] && flash_dtbo ||
+    ui_print "==> No DTBO image found. Skipping DTBO installation.";
 ## end dtbo install
 
 ## start vendor_boot install
 BLOCK=vendor_boot;
-[ -f dtb ] && reset_ak && split_boot && flash_boot;
+[ -f dtb ] && reset_ak && flash_simple ||
+    ui_print "==> No DTB found. Skipping vendor_boot installation.";
 ## end vendor_boot install
 
 # Clean caches
