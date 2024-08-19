@@ -26,20 +26,33 @@ PATCH_VBMETA_FLAG=auto;
 . tools/ak3-core.sh;
 
 ## start boot install
-[ -f *Image* ] && flash_simple ||
-    ui_print "==> No kernel image found. Skipping kernel installation.";
+if [[ -f *Image* ]];
+then
+  flash_simple;
+else
+  ui_print "==> Skip kernel installation.";
+fi;
 ## end boot install
 
-## start dtbo install
-[ -f dtbo.img ] && flash_dtbo ||
-    ui_print "==> No DTBO image found. Skipping DTBO installation.";
-## end dtbo install
-
-## start vendor_boot install
+## start dtbo & vendor_boot install
 BLOCK=vendor_boot;
-[ -f dtb ] && reset_ak && flash_simple ||
-    ui_print "==> No DTB found. Skipping vendor_boot installation.";
-## end vendor_boot install
+
+if [[ -f dtbo.img ]];
+then
+  flash_dtbo;
+else
+  ui_print "==> Skip DTBO installation.";
+fi;
+
+if [[ -f dtb ]];
+then
+  reset_ak;
+  flash_simple;
+else
+  ui_print "==> Skip DTB installation.";
+fi;
+## end dtbo & vendor_boot install
 
 # Clean caches
+ui_print "==> Clean caches.";
 rm -rf /data/cache/* /data/dalvik-cache/* /data/resource-cache/* /data/system/package_cache/*
