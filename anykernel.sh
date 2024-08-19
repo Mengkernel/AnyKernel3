@@ -37,19 +37,13 @@ fi;
 ## start dtbo & vendor_boot install
 BLOCK=vendor_boot;
 
-if [[ -f dtbo.img ]];
+if [[ -f dtb* ]];
 then
   flash_dtbo;
-else
-  ui_print "==> Skip DTBO installation.";
-fi;
-
-if [[ -f dtb ]];
-then
   reset_ak;
   flash_simple;
 else
-  ui_print "==> Skip DTB installation.";
+  ui_print "==> Skip DTB/DTBO installation.";
 fi;
 ## end dtbo & vendor_boot install
 
